@@ -41,9 +41,10 @@ html, body {
   pointer-events: none;
 }
 
-/* admin.html의 블록 전환용 — 레이아웃 공간까지 완전히 제거 */
+/* admin.html의 블록 전환용 — 레이아웃 공간까지 완전히 제거.
+   !important는 뒤에 선언된 .modal { display: flex } 같은 규칙을 항상 이기기 위함. */
 .admin-hidden {
-  display: none;
+  display: none !important;
 }
 
 #cover .heart {
@@ -228,4 +229,35 @@ button.secondary {
 
 .toast.show {
   opacity: 1;
+}
+
+.modal {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 100;
+  padding: 20px;
+}
+
+.modal-card {
+  background: #241d2b;
+  border-radius: 14px;
+  padding: 24px;
+  width: 100%;
+  max-width: 460px;
+}
+
+.modal-card h2 {
+  font-size: 18px;
+  margin: 0 0 16px;
+}
+
+.modal-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+  margin-top: 16px;
 }

@@ -67,11 +67,15 @@ function renderList() {
     downBtn.disabled = !nextSame;
     downBtn.onclick = () => moveItem(i, 1);
 
+    const editBtn = document.createElement('button');
+    editBtn.textContent = '편집';
+    editBtn.onclick = () => openEditModal(i);
+
     const delBtn = document.createElement('button');
     delBtn.textContent = '삭제';
     delBtn.onclick = () => deleteItem(i);
 
-    actions.append(upBtn, downBtn, delBtn);
+    actions.append(upBtn, downBtn, editBtn, delBtn);
     li.append(dateBadge, text, actions);
     ul.appendChild(li);
   });
@@ -103,6 +107,43 @@ async function addPhrase() {
 
 async function deleteItem(i) {
   phrases.splice(i, 1);
+  renderList();
+  await persist();
+}
+
+let editIndex = -1;
+
+function openEditModal(i) {
+  editIndex = i;
+  const modal = document.getElementById('edit-modal');
+  const dateInput = document.getElementById('edit-date');
+  const textArea = document.getElementById('edit-text');
+  dateInput.value = phrases[i].date || '';
+  textArea.value = phrases[i].text;
+  modal.classList.remove('admin-hidden');
+  setTimeout(() => textArea.focus(), 0);
+}
+
+function closeEditModal() {
+  editIndex = -1;
+  document.getElementById('edit-modal').classList.add('admin-hidden');
+}
+
+async function saveEdit() {
+  if (editIndex < 0) return;
+  const date = document.getElementById('edit-date').value;
+  const text = document.getElementById('edit-text').value.trim();
+  if (!date) {
+    showToast('날짜를 선택해주세요.');
+    return;
+  }
+  if (!text) {
+    showToast('문구를 입력해주세요.');
+    return;
+  }
+  phrases[editIndex] = { date, text };
+  phrases = sortPhrases(phrases);
+  closeEditModal();
   renderList();
   await persist();
 }
@@ -145,6 +186,14 @@ async function init() {
     await navigator.clipboard.writeText(viewerUrl());
     showToast('링크가 복사됐어요');
   };
+  document.getElementById('edit-save-btn').onclick = saveEdit;
+  document.getElementById('edit-cancel-btn').onclick = closeEditModal;
+  document.getElementById('edit-modal').addEventListener('click', (e) => {
+    if (e.target.id === 'edit-modal') closeEditModal();
+  });
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && editIndex >= 0) closeEditModal();
+  });
 
   if (!token) {
     showCreateBlock();
