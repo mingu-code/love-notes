@@ -49,12 +49,13 @@ html, body {
 
 #cover .heart {
   font-size: 64px;
+  color: #f4b6c2;
   animation: pulse 1.6s ease-in-out infinite;
 }
 
 #cover p {
   font-size: 18px;
-  color: #cbb8c2;
+  color: #f4b6c2;
   letter-spacing: 0.05em;
 }
 
