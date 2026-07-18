@@ -11,9 +11,26 @@ function showEmpty(msg) {
   empty.classList.remove('hidden');
 }
 
+function normalizePhrase(p) {
+  return typeof p === 'string' ? { date: '', text: p } : p;
+}
+
+function sortPhrases(list) {
+  return list
+    .map(normalizePhrase)
+    .map((p, i) => ({ p, i }))
+    .sort((a, b) => {
+      const da = a.p.date || '9999-99-99';
+      const db = b.p.date || '9999-99-99';
+      if (da !== db) return da < db ? -1 : 1;
+      return a.i - b.i;
+    })
+    .map(({ p }) => p);
+}
+
 function renderPhrase() {
   const textEl = document.getElementById('phrase-text');
-  textEl.textContent = phrases[idx];
+  textEl.textContent = phrases[idx].text;
   fitText(textEl, { min: 20, max: 120 });
 }
 
@@ -52,7 +69,7 @@ async function init() {
     showEmpty('아직 준비된 문구가 없어요.');
     return;
   }
-  phrases = data.phrases;
+  phrases = sortPhrases(data.phrases);
   document.getElementById('cover').addEventListener('click', openFirst);
 }
 
