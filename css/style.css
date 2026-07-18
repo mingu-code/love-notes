@@ -8,7 +8,7 @@ html, body {
   height: 100%;
   background: #1b1620;
   color: #f5eef0;
-  font-family: 'Apple SD Gothic Neo', 'Malgun Gothic', -apple-system, sans-serif;
+  font-family: 'Pretendard', 'Apple SD Gothic Neo', -apple-system, sans-serif;
   overflow: hidden;
 }
 
@@ -63,8 +63,10 @@ html, body {
 }
 
 #phrase-text {
-  font-family: 'Nanum Myeongjo', Georgia, serif;
-  line-height: 1.5;
+  font-family: 'Pretendard', -apple-system, sans-serif;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  line-height: 1.4;
   white-space: pre-wrap;
   word-break: keep-all;
   width: 84vw;
